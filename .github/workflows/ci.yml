@@ -28,7 +28,28 @@ jobs:
         run: uv run ruff check app/ tests/
 
       - name: Tests with coverage
-        run: uv run pytest -v --cov-report=xml
+        run: uv run pytest -v --cov-report=xml --cov-report=json
+
+      - name: Extract coverage
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          TOTAL=$(python3 -c "import json; print(int(json.load(open('coverage.json'))['totals']['percent_covered_display']))")
+          echo "coverage=$TOTAL" >> $GITHUB_OUTPUT
+          echo "Auth Service coverage: ${TOTAL}%"
+        id: auth_cov
+
+      - name: Update Auth coverage badge
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_TOKEN }}
+          gistID: ${{ vars.COVERAGE_GIST_ID }}
+          filename: auth_coverage.json
+          label: Auth Service coverage
+          message: ${{ steps.auth_cov.outputs.coverage }}%
+          valColorRange: ${{ steps.auth_cov.outputs.coverage }}
+          minColorRange: 50
+          maxColorRange: 90
 
   bot-service:
     name: Bot Service — lint & test
@@ -51,4 +72,25 @@ jobs:
         run: uv run ruff check app/ tests/
 
       - name: Tests with coverage
-        run: uv run pytest -v --cov-report=xml
+        run: uv run pytest -v --cov-report=xml --cov-report=json
+
+      - name: Extract coverage
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          TOTAL=$(python3 -c "import json; print(int(json.load(open('coverage.json'))['totals']['percent_covered_display']))")
+          echo "coverage=$TOTAL" >> $GITHUB_OUTPUT
+          echo "Bot Service coverage: ${TOTAL}%"
+        id: bot_cov
+
+      - name: Update Bot coverage badge
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_TOKEN }}
+          gistID: ${{ vars.COVERAGE_GIST_ID }}
+          filename: bot_coverage.json
+          label: Bot Service coverage
+          message: ${{ steps.bot_cov.outputs.coverage }}%
+          valColorRange: ${{ steps.bot_cov.outputs.coverage }}
+          minColorRange: 50
+          maxColorRange: 90
