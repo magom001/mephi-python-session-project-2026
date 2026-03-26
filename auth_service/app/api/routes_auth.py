@@ -1,0 +1,43 @@
+"""Эндпоинты аутентификации.
+
+Тонкие маршруты: принимают данные, вызывают use-case и возвращают результат.
+"""
+
+from typing import Annotated
+
+from fastapi import APIRouter, Depends
+from fastapi.security import OAuth2PasswordRequestForm
+
+from app.api.deps import get_auth_uc, get_current_user_id
+from app.schemas.auth import RegisterRequest, TokenResponse
+from app.schemas.user import UserPublic
+from app.usecases.auth import AuthUseCase
+
+router = APIRouter(prefix="/auth", tags=["auth"])
+
+
+@router.post("/register", response_model=TokenResponse, status_code=201)
+async def register(
+    body: RegisterRequest,
+    uc: Annotated[AuthUseCase, Depends(get_auth_uc)],
+) -> TokenResponse:
+    """Регистрация нового пользователя и выдача JWT."""
+    return await uc.register(email=body.email, password=body.password)
+
+
+@router.post("/login", response_model=TokenResponse)
+async def login(
+    form: Annotated[OAuth2PasswordRequestForm, Depends()],
+    uc: Annotated[AuthUseCase, Depends(get_auth_uc)],
+) -> TokenResponse:
+    """Аутентификация пользователя и получение JWT."""
+    return await uc.login(email=form.username, password=form.password)
+
+
+@router.get("/me", response_model=UserPublic)
+async def me(
+    user_id: Annotated[int, Depends(get_current_user_id)],
+    uc: Annotated[AuthUseCase, Depends(get_auth_uc)],
+) -> UserPublic:
+    """Получение профиля текущего пользователя по JWT."""
+    return await uc.me(user_id)
