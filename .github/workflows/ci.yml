@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  auth-service:
+    name: Auth Service — lint & test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: auth_service
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Lint
+        run: uv run ruff check app/ tests/
+
+      - name: Tests
+        run: uv run pytest -v
+
+  bot-service:
+    name: Bot Service — lint & test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: bot_service
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Lint
+        run: uv run ruff check app/ tests/
+
+      - name: Tests
+        run: uv run pytest -v
