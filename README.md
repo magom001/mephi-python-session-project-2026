@@ -1,6 +1,8 @@
 # Двухсервисная система LLM-консультаций
 
 [![CI](https://github.com/magom001/mephi-python-session-project-2026/actions/workflows/ci.yml/badge.svg)](https://github.com/magom001/mephi-python-session-project-2026/actions/workflows/ci.yml)
+![Auth Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/magom001/GIST_ID/raw/auth_coverage.json)
+![Bot Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/magom001/GIST_ID/raw/bot_coverage.json)
 
 ## Архитектура
 
