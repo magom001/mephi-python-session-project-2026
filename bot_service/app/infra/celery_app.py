@@ -23,4 +23,4 @@ celery_app.conf.update(
 
 celery_app.autodiscover_tasks(["app.tasks"])
 
-import app.tasks.llm_tasks
+import app.tasks.llm_tasks as _llm_tasks  # noqa: E402, F401  # явный импорт для регистрации задач

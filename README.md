@@ -114,7 +114,7 @@ docker compose up --build
 docker compose down
 ```
 
-## Тестирование
+## Тестирование и линтер
 
 Тесты работают **локально без Docker, Redis и RabbitMQ** — все внешние зависимости мокаются.
 
@@ -123,6 +123,7 @@ docker compose down
 ```bash
 cd auth_service
 uv sync
+uv run ruff check app/ tests/
 uv run pytest -v
 ```
 
@@ -139,6 +140,7 @@ uv run pytest -v
 ```bash
 cd bot_service
 uv sync
+uv run ruff check app/ tests/
 uv run pytest -v
 ```
 
