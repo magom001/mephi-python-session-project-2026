@@ -153,3 +153,35 @@ uv run pytest -v
 
 **Интеграционные тесты** (respx):
 - Клиент OpenRouter: успешный ответ, ошибка API, некорректный формат ответа
+
+## Скриншоты
+
+### Swagger Auth Service
+
+#### Регистрация пользователя (POST /auth/register)
+
+![Регистрация](docs/images/auth.png)
+
+#### Логин (POST /auth/login)
+
+![Логин](docs/images/login.png)
+
+#### Профиль пользователя (GET /auth/me)
+
+![Профиль](docs/images/me.png)
+
+### Telegram-бот
+
+#### Отправка JWT-токена боту
+
+![Токен](docs/images/bot-token.png)
+
+#### Запрос к LLM и получение ответа
+
+![Сообщение](docs/images/bot-message.png)
+
+### RabbitMQ
+
+#### Интерфейс управления — активные очереди и consumers
+
+![RabbitMQ](docs/images/rabbitmq.png)
