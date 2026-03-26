@@ -27,8 +27,8 @@ jobs:
       - name: Lint
         run: uv run ruff check app/ tests/
 
-      - name: Tests
-        run: uv run pytest -v
+      - name: Tests with coverage
+        run: uv run pytest -v --cov-report=xml
 
   bot-service:
     name: Bot Service — lint & test
@@ -50,5 +50,5 @@ jobs:
       - name: Lint
         run: uv run ruff check app/ tests/
 
-      - name: Tests
-        run: uv run pytest -v
+      - name: Tests with coverage
+        run: uv run pytest -v --cov-report=xml
